@@ -73,9 +73,9 @@ def metodo_tautologia():
 
 
 def generar_tabla_verdad(arreglo_hipotesis, conclusion, metodo):
-    variables = set()
     implicacion_general = ""
     
+    variables = set()
     #Extraemos las variables de las hipotesis
     for i in range(len(arreglo_hipotesis)):
         variables.update(extraer_variables(arreglo_hipotesis[i]))
@@ -98,8 +98,12 @@ def generar_tabla_verdad(arreglo_hipotesis, conclusion, metodo):
         arreglo_hipotesis[i] = arreglo_hipotesis[i].replace("^","and")
         arreglo_hipotesis[i] = arreglo_hipotesis[i].replace("~","not ")
         arreglo_hipotesis[i] = arreglo_hipotesis[i].replace("->","<=")   #SON LO MISMO :D checamos las tablas de verdad y implicacion es lo mismo que <= cuando usamos 0's y 1's
-        
+    
     encabezados.append(conclusion) #Agregamos la conclusion a los encabezados, porq es la ultima columna
+    conclusion = conclusion.replace("v","or")
+    conclusion = conclusion.replace("^","and")
+    conclusion = conclusion.replace("~","not ")
+    conclusion = conclusion.replace("->","<=")  
     
     if metodo == "tautologia": #Si es tautologia, hay que hacer la implicacion gigante para la comprobación
         #Juntamos todas las hipotesis con ands
@@ -146,6 +150,7 @@ def generar_tabla_verdad(arreglo_hipotesis, conclusion, metodo):
         fila.append(resultado_conclusion) #Evaluamos la conclusion usando los valroes de esa fila del dicc
         #p q r  p v q   q   
         #1 0 0    1     0
+        
         if metodo == "tautologia":
             check_tautologia = eval(implicacion_general, {}, valores) #Evaluamos la implicacion gigante usando los valroes de esa fila del dicc
             fila.append(check_tautologia) #Agregamos el resultado de la implicacion gigante a la fila
@@ -158,7 +163,7 @@ def generar_tabla_verdad(arreglo_hipotesis, conclusion, metodo):
             if not resultado_conclusion: 
                 argumento_valido = False #Si es renglon critico y la conclusion no es verdadera en alguna fila, el argumento no es valido
                 renglones_falla.append(nfilas-i-1) #Es un renglon critico que fallo, asi que lo guardamos
-                print(f"Renglon de falla: {nfilas-i-1}")
+                
         
         tabla.insert(0, fila) #Insertamos la fila que acabamos de hacer al inicio de la tabla, para que la fila "0" que tiene puros 0's o falsos quede hasta abajo
         
