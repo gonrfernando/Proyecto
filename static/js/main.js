@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const addHypothesisButton = document.querySelector('button.btn-highlight'); 
 
     addHypothesisButton.addEventListener('click', function() {
-        const value = hypothesisInput.value.trim();
-        if (value === '') {
+        const text = hypothesisInput.value.trim();
+        if (text === '') {
             alert('Por favor, ingresa una hipótesis.');
             return;
         }
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
         for (let i = 1; i <= 10; i++) {
             const hInput = document.getElementById('h' + i);
             if (hInput && hInput.value === '') {
-                hInput.value = value;
+                hInput.value = text;
                 hypothesisInput.value = ''; 
                 return;
             }
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sendData('/metodo-tautologia');
     });
 
-    function sendData(endpoint) {
+    function sendData(link) {
         const hypotheses = [];
         for (let i = 1; i <= 10; i++) {
             const val = document.getElementById('h' + i).value.trim();
@@ -65,25 +65,17 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        fetch(endpoint, {
+        fetch(link, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ hypotheses, conclusion })
+            body: JSON.stringify({ hypotheses, conclusion }) //convirte el objeto a JSON
         })
         .then(response => {
             if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Error en la solicitud');
+                window.location.href = "/resultado";
             }
-        })
-        .then(data => {
-            alert('Datos enviados correctamente.');
-        })
-        .catch(error => {
-            alert('Error: ' + error.message);
         });
     }
 });
