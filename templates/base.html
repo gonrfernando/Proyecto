@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es"> <!--en español -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto LyED</title>
+    <title>Proyecto LyED</title> <!-- Titulo de la pag -->
+
+    <!-- Aqui ponemos los links de css y js -->
     <link rel="stylesheet", href="{{url_for('static', filename='css/style.css')}}">
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -11,7 +13,7 @@
 </head>
 <body>
     <div class="content d-flex flex-row">
-        {% block content %}
+        {% block content %} <!-- En este bloque va a ir todo el contenido de las otras paginas-->
         {% endblock content %}
     </div>
 </body>

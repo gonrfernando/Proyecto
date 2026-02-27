@@ -1,80 +1,89 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!--Divs para centrar todo-->
 <div class="center-frame d-flex flex-row w-100">
     <div class="d-flex flex-wrap w-75 flex-column align-content-center justify-content-center">
+        <!-- cuadro de la izq -->
         <div class="d-flex flex-column crystal-panel w-100">
             <div class="h-75 d-flex flex-column pb-4">
+                <!--seccion para agregar hipotesis-->
                 <h1 style="font-size: 3rem; line-height:1; font-weight:700;">Hipotesis</h1>
                 <p class="color-muted fs-5">Usa solo literales y operadores logicos <span class="color-primary">(v ^ ~ -> <->)</span></p>
                 <div>
-                    <input class="w-75 h-auto" id="hypothesis">
-                    <button class="btn-highlight ms-3 hover-primary">Agregar hipotesis</button>
+                    <input class="w-75 h-auto" id="hypothesis"> <!--Aqui escribe el usuario -->
+                    <button class="btn-highlight ms-3 hover-primary" id="boton-agregar-hypothesis">Agregar hipotesis</button>
                 </div>
+
+                <!--cuadro con todas las 10 hipotessi-->
                 <div class="h-container d-flex flex-column overflow-auto w-100 mt-2 gap-1">
                     <div class="d-flex flex-row w-100 align-items-center justify-content-center">
                         <h3 class="me-2 sub mt-2">h1:</h3>
-                        <input class="h-auto w-100" id="h1" disabled>
+                        <input class="h-auto w-100" id="h1">
                     </div>
                     <div class="d-flex flex-row w-100 align-items-center justify-content-center">
                         <h3 class="me-2 sub mt-2">h2:</h3>
-                        <input class="h-auto w-100" id="h2" disabled>
+                        <input class="h-auto w-100" id="h2">
                     </div>
                     <div class="d-flex flex-row w-100 align-items-center justify-content-center">
                         <h3 class="me-2 sub mt-2">h3:</h3>
-                        <input class="h-auto w-100" id="h3" disabled>
+                        <input class="h-auto w-100" id="h3">
                     </div>
                     <div class="d-flex flex-row w-100 align-items-center justify-content-center">
                         <h3 class="me-2 sub mt-2">h4:</h3>
-                        <input class="h-auto w-100" id="h4" disabled>
+                        <input class="h-auto w-100" id="h4">
                     </div>
                     <div class="d-flex flex-row w-100 align-items-center justify-content-center">
                         <h3 class="me-2 sub mt-2">h5:</h3>
-                        <input class="h-auto w-100" id="h5" disabled>
+                        <input class="h-auto w-100" id="h5">
                     </div>
                     <div class="d-flex flex-row w-100 align-items-center justify-content-center">
                         <h3 class="me-2 sub mt-2">h6:</h3>
-                        <input class="h-auto w-100" id="h6" disabled>
+                        <input class="h-auto w-100" id="h6">
                     </div>
                     <div class="d-flex flex-row w-100 align-items-center justify-content-center">
                         <h3 class="me-2 sub mt-2">h7:</h3>
-                        <input class="h-auto w-100" id="h7" disabled>
+                        <input class="h-auto w-100" id="h7">
                     </div>
                     <div class="d-flex flex-row w-100 align-items-center justify-content-center">
                         <h3 class="me-2 sub mt-2">h8:</h3>
-                        <input class="h-auto w-100" id="h8" disabled>
+                        <input class="h-auto w-100" id="h8">
                     </div>
                     <div class="d-flex flex-row w-100 align-items-center justify-content-center">
                         <h3 class="me-2 sub mt-2">h9:</h3>
-                        <input class="h-auto w-100" id="h9" disabled>
+                        <input class="h-auto w-100" id="h9">
                     </div>
                     <div class="d-flex flex-row w-100 align-items-center justify-content-center">
                         <h3 class="me-2 sub mt-2">h10:</h3>
-                        <input class="h-auto w-100" id="h10" disabled>
+                        <input class="h-auto w-100" id="h10">
                     </div>
                 </div>
+
             </div>
             <div class="h-25">
+                <!-- Seccion para agregar conclusion-->
                 <h1 style="font-size: 3rem; line-height:1; font-weight:700;">Conclusion</h1>
                 <input class="w-75 h-auto" id="conclusion">
-                <button class="btn-highlight ms-3 hover-primary">Agregar conclusion</button>
+                <button class="btn-highlight ms-3 hover-primary" id="boton-agregar-conclusion">Agregar conclusion</button>
+
+                <!-- Cuadro de la conclusion -->
                 <div class="h-container d-flex flex-column overflow-auto w-100 mt-2 gap-1">
                     <div class="d-flex flex-row w-100 align-items-center justify-content-center">
                         <h3 class="me-2 sub mt-2">Q:</h3>
-                        <input class="h-auto w-100" id="Q" disabled>
+                        <input class="h-auto w-100" id="Q">
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="d-flex flex-wrap w-25 h-100 flex-column align-content-center justify-content-center">
-        <button class="crystal-panel hover-primary p-4 w-75 ms-3" id="renglon-critico">
+    <div class="d-flex flex-wrap w-25 h-100 flex-column align-content-center justify-content-center"> <!-- cuadro de la derecha con los botones de cada metodo-->
+        <button class="crystal-panel hover-primary p-4 w-75 ms-3" id="renglon-critico"> <!--Boton de renglon critico -->
             <div class=" justify-content-center align-items-center">
                 <h1 class="fs-3 lh-1 fw-bold">Renglón crítico</h1>
                 <p class="color-muted m-0">Genera la tabla de verdad, identifica los renglones críticos y revisa que la conclusión sea verdadera en todos</p>
             </div>
         </button>
-        <button class="crystal-panel hover-primary p-4 w-75 ms-3" id="metodo-tautologia">
+        <button class="crystal-panel hover-primary p-4 w-75 ms-3" id="metodo-tautologia"><!--Boton de tautologia -->
             <div class=" justify-content-center align-items-center">
                 <h1 class="fs-3 lh-1 fw-bold">Método de la tautología</h1>
                 <p class="color-muted m-0">Genera la tabla de verdad, y revisa la implicación de la conjunción de las premisas con la conlcusión</p>
@@ -83,6 +92,7 @@
     </div>
 </div>
 
+<!-- Boton para ir para atras-->
 <a class="crystal-panel hover-primary p-3 m-3 position-absolute top-0" href="/">
     <div class="d-flex flex-row">
         <div class="d-flex align-items-center justify-content-center me-4">

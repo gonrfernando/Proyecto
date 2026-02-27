@@ -6,29 +6,60 @@
     <div class="d-flex flex-column crystal-panel w-100">
         <h1 style="font-size: 3rem; line-height:1; font-weight:700;">Resultado</h1>
         <p class="color-muted fs-5">Tabla de verdad generada a partir de las hipotesis y conclusion ingresadas</p>
+        <h1 class="fs-4 lh-1 fw-bold p-0 m-0">Argumento {% if argumento_valido %}<span class="color-success">Valido</span>{% else %}<span class="color-danger">No valido</span>{% endif %}</h1>
+
         <div id="tabla-container" class="h-container d-flex flex-column overflow-auto w-100 mt-2 gap-1">
+
             <table class="table table-striped table-bordered">
                 <thead class="table-dark">
-                    <tr>
-                        {% for var in encabezados %}
-                            <th>{{ var }}</th>
+                    <!-- tr es table row, creamos la fila de los encabezados  o titulos-->
+                    <tr> 
+                        {% for var in encabezados %} <!-- th es una celda de los encabezados, aqui vamos a crear una th para cada encabezado que teníamos guardado -->
+                        <th>{{ var }}</th>
                         {% endfor %}
                     </tr>
+                    <!-- aqui ya tenemos nuestra fila de encabezados algo asi [ p ][ q ][ p v q ][ q ] por ejemplo  -->
                 </thead>
                 <tbody>
-                    {% for fila in tabla %}
-                        <tr>
-                            {% for valor in fila %}
-                                <td>{{ valor }}</td>
+                    {% for fila in tabla %} <!-- vamos creando una fila en la tabla del html por cada fila que tenemos generada en la tabla de verdad-->
+                        <!--Si el renglon es un renglon critico que fallo lo ponemos en rojo, sino en verde y si nada, blanco-->
+                        <tr class="
+                        {% if loop.index0 in renglones_falla %} 
+                            table-danger
+                        {% elif loop.index0 in renglones_criticos %}
+                            table-success
+                        {% else %}
+                            table-light
+                        {% endif %}">
+                            {% for valor in fila %} <!-- td es una celda de la tabla del html, creamos un td para cada valor de esa fila-->
+                                <!-- Si es tautologia y estamos en la columna de la mega implicacion, la marcamos en verde si es v y rojo si es f -->
+                                <td class="
+                                {% if metodo == 'tautologia' and loop.index0 == (fila|length - 1) %}    
+                                    {% if valor %}                                                      
+                                        table-success                                               
+                                    {% else %}                                                          
+                                        table-danger                                                    
+                                    {% endif %}
+                                {% endif %}
+                                ">{% if valor == "1" or valor == 1 or valor == "True" or valor == True %}V{% else %}F{% endif %}</td> <!-- Estandarizamos todo a V's y F-->
                             {% endfor %}
+                            <!-- Aqui nuestra fila se ve algo asi [V][F][V][F] por ejemplo-->
                         </tr>
                     {% endfor %}
+                    <!-- ya tenemos todas las filas, la tabla esta hecha algo asi-->
+                    <!--    [ p ][ q ][ p v q ][ q ]
+                            [ V ][ V ][   V   ][ V ]
+                            [ V ][ F ][   V   ][ F ]
+                            [ F ][ V ][   V   ][ V ]
+                            [ F ][ F ][   F   ][ F ] -->
                 </tbody>
             </table>
+
         </div>
     </div>
 </div>
 
+<!-- Boton para ir para atras -->
 <a class="crystal-panel hover-primary p-3 m-3 position-absolute top-0" href="/Tablas">
     <div class="d-flex flex-row">
         <div class="d-flex align-items-center justify-content-center me-4">
