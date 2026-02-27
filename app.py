@@ -82,13 +82,63 @@ def metodo_tautologia():
     data = request.get_json()
     hypotheses = data.get('hypotheses', [])
     conclusion = data.get('conclusion', '')
+    tabla = []
     
     variables = set()
-    for hypothesis in hypotheses:
-        variables.update(extraer_variables(hypothesis))
     
+    for i in range(len(hypotheses)):
+        variables.update(extraer_variables(hypotheses[i]))
+        
+    variables = list(variables)
+    variables.sort()
+        
+    encabezados = []
+    for var in variables:
+        encabezados.append(var)
+    for i in range(len(hypotheses)):
+        encabezados.append(hypotheses[i])
+        hypotheses[i] = hypotheses[i].replace("v","or")
+        hypotheses[i] = hypotheses[i].replace("^","and")
+        hypotheses[i] = hypotheses[i].replace("~","not ")
+        hypotheses[i] = hypotheses[i].replace("->","<=")
+    encabezados.append(conclusion)
     
-    return 
+    implicacion_general = ""
+    for h in hypotheses:
+        if implicacion_general:
+            implicacion_general += " and "
+        implicacion_general += "(" + h + ")"
+    implicacion_general = "(" + implicacion_general + ") <= " + conclusion
+    
+    encabezados.append("Conjunción de Hipotesis -> Conclusion")
+    n = len(variables)
+    nfilas = 2 ** n
+
+    for i in range (nfilas):
+        fila = []
+        bin = format(i,'016b')
+        bin = bin[-n:]
+        
+        valores = dict()
+        for j in range(n):
+            valores[variables[j]] = int(bin[j])
+            fila.append(bin[j])
+            
+        for j in range(len(hypotheses)):
+            h = hypotheses[j]
+            result = eval(h, {}, valores)
+            fila.append(result)
+            
+        fila.append(eval(conclusion, {}, valores))
+        print(f"Evaluando: {implicacion_general} con {valores} = {eval(implicacion_general, {}, valores)}")
+        fila.append(eval(implicacion_general, {}, valores))
+        
+        tabla.insert(0, fila)
+        
+    session['encabezados'] = encabezados
+    session['tabla'] = tabla
+    
+    return jsonify({"status": "ok"}), 200
 
 def extraer_variables(expresion):
     variables = set()
