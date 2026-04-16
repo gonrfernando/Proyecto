@@ -24,7 +24,8 @@ def resultado():
     metodo = session.get('metodo')
     renglones_criticos = session.get('renglones_criticos', [])
     renglones_falla = session.get('renglones_falla', [])
-    argumento_valido = session.get('argumento_valido', True)
+    argumento_valido = session.get('argumento_valido', True) 
+    a = 0
     
     #Manda a mostrar el resultado.html y le pasa los encabezados y la tabla como variables al html
     return(render_template('resultado.html', encabezados=encabezados, tabla=tabla, metodo=metodo, renglones_criticos=renglones_criticos, renglones_falla=renglones_falla, argumento_valido=argumento_valido)) 
@@ -69,7 +70,22 @@ def metodo_tautologia():
     session['metodo'] = "tautologia"
     return jsonify({"status": "ok"}), 200 #regresamos al main.js que todo ok
 
+@app.route("/Conjuntos")
+def conjuntos():
+    return(render_template('conjuntos.html'))
 
+@app.route("/realizar-operacion", methods=['POST'])
+def realizar_operacion():
+    data = request.get_json()
+
+    conjunto1 = data.get("conjunto1")
+    conjunto2 = data.get("conjunto2")
+    operacion = data.get("operacion")
+    resultado = set()
+    #Hay que hacer ifs para cada caso, si operacion es "union", resultado es la union de conjunto1 y conjunto2, si es "interseccion", resultado es la interseccion de conjunto1 y conjunto2, etc.
+    
+    resultado = conjunto1 #para probar
+    return jsonify({"resultado": list(resultado)})
 
 
 def generar_tabla_verdad(arreglo_hipotesis, conclusion, metodo):

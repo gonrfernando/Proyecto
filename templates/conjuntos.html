@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!--Divs para centrar todo-->
+<div class="center-frame d-flex flex-row w-100">
+    <div class="d-flex flex-wrap w-100 flex-column align-content-center justify-content-center">
+        <!-- cuadro de la izq -->
+        <div class="d-flex flex-column crystal-panel w-100">
+            <div class="h-auto d-flex flex-column pb-4">
+                <!--seccion para agregar hipotesis-->
+                <h1 style="font-size: 3rem; line-height:1; font-weight:700;">Conjuntos</h1>
+                <p class="color-muted fs-5">Carga cada conjunto desde archivos de texto <span class="color-primary">.txt</span><br> Recuerda usar caracteres alfanumericos y maximo a 2 niveles</p>
+                <div class="h-container h-50 d-flex flex-column overflow-auto w-100 mt-2 gap-1">
+                    <div class="d-flex flex-row w-100 align-items-center justify-content-start">
+                        <h3 class="ms-4 sub w-auto">U:</h3>
+                        <input class="h-auto w-25" id="conjuntoU" type="file" accept=".txt">
+                        <input class="h-auto w-75 ms-3" id="conjuntoU-text" type="text" disabled>
+                    </div>
+                    <div class="d-flex flex-row w-100 align-items-center justify-content-center">
+                        <h3 class="ms-4 sub mt-2">A:</h3>
+                        <input class="h-auto w-25" id="conjuntoA" type="file" accept=".txt">
+                        <input class="h-auto w-75 ms-3" id="conjuntoA-text" type="text" disabled>
+                    </div>
+                    <div class="d-flex flex-row w-100 align-items-center justify-content-start">
+                        <h3 class="ms-4 sub mt-2">B:</h3>
+                        <input class="h-auto w-25" id="conjuntoB" type="file" accept=".txt">
+                        <input class="h-auto w-75 ms-3" id="conjuntoB-text" type="text" disabled>
+                    </div>
+                    <div class="d-flex flex-row w-100 align-items-center justify-content-start">
+                        <h3 class="ms-4 sub mt-2">C:</h3>
+                        <input class="h-auto w-25" id="conjuntoC" type="file" accept=".txt">
+                        <input class="h-auto w-75 ms-3" id="conjuntoC-text" type="text" disabled>
+                    </div>
+                </div>
+                <h3 class="mt-5 sub w-auto">Operaciones: </h3>
+                <p class="color-muted fs-5">Selecciona 2 conjuntos y una operación</p>
+                <div class=" h-auto d-flex flex-row w-100 mt-4 gap-1">
+                    <div class="d-flex flex-column w-25">
+                        <div class="d-flex flex-row w-auto align-items-center justify-content-start gap-1">
+                            <h3 class="color-muted fs-5">Conjuntos :  </h3>
+                            <button class="btn-highlight p-2 hover-primary" id="U">U</button>
+                            <button class="btn-highlight p-2 hover-primary" id="A">A</button>
+                            <button class="btn-highlight p-2 hover-primary" id="B">B</button>
+                            <button class="btn-highlight p-2 hover-primary" id="C">C</button>
+                        </div>
+                        <div class="d-flex flex-row mt-3 w-auto align-items-center justify-content-start gap-1">
+                            <h3 class="color-muted fs-5">Operaciones:  </h3>
+                            <button class="btn-highlight p-2 hover-primary" id="operacion-union">U</button>
+                            <button class="btn-highlight p-2 hover-primary" id="operacion-interseccion">∩</button>
+                            <button class="btn-highlight p-2 hover-primary" id="operacion-diferencia">-</button>
+                            <button class="btn-highlight p-2 hover-primary" id="operacion-simetrica">△</button>
+                        </div>
+                        <button class="btn-highlight mt-3 w-75 hover-primary" id="boton-realizar-operacion">Realizar operacion</button>
+                    </div>
+                    <div id="resultado-conjuntos" class="d-flex flex-column w-75 justify-content-start gap-3">
+                        <div class="d-flex flex-row w-auto justify-content-start gap-1">
+                            <h3 class="color-muted fs-5">Operacion:  </h3>
+                            <input class="h-auto w-75 ms-3" id="operacion-seleccionada" type="text" disabled>
+                        </div>
+                        <div class="d-flex flex-row w-auto justify-content-start gap-1">
+                            <h3 class="color-muted fs-5">Resultado:  </h3>
+                            <input class="h-auto w-75 ms-3" id="resultado-conjuntos-text" type="text" disabled>
+                        </div>
+                        <div id="resultado-conjuntos-grafico" class="d-flex flex-row w-auto align-items-center justify-content-start gap-1">
+                            <h3 class="color-muted fs-5">Grafico:  </h3>
+                            <div id="grafico-conjuntos" class="w-75 h-auto ms-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Boton para ir para atras-->
+<a class="crystal-panel hover-primary p-3 m-3 position-absolute top-0" href="/">
+    <div class="d-flex flex-row">
+        <div class="d-flex align-items-center justify-content-center me-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/></svg>
+        </div>
+        <div class=" justify-content-center align-items-center text-center">
+            <h1 class="fs-4 lh-1 fw-bold p-0 m-0">Atras</h1>
+        </div>
+    </div>
+</a>
+
+{% endblock content %}
