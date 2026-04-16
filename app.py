@@ -83,10 +83,32 @@ def realizar_operacion():
     operacion1 = data.get("operacion")
     conjunto3 = data.get("conjunto3")
     operacion2 = data.get("operacion2")
+    conjunto1 = set(conjunto1)
+    conjunto2 = set(conjunto2)
+    conjunto3 = set(conjunto3) if conjunto3 else None
     resultado = set()
-    #Hay que hacer ifs para cada caso, si operacion es "union", resultado es la union de conjunto1 y conjunto2, si es "interseccion", resultado es la interseccion de conjunto1 y conjunto2, etc.
+    if operacion1 == "union":
+        resultado = conjunto1.union(conjunto2)
+    elif operacion1 == "interseccion":
+        resultado = conjunto1.intersection(conjunto2)
+    elif operacion1 == "diferencia":
+        resultado = conjunto1.difference(conjunto2)
+    elif operacion1 == "simetrica":
+        resultado = conjunto1.symmetric_difference(conjunto2)
+        
+    if operacion2 and conjunto3:
+        if operacion2 == "union":
+            resultado = resultado.union(conjunto3)
+        elif operacion2 == "interseccion":
+            resultado = resultado.intersection(conjunto3)
+        elif operacion2 == "diferencia":
+            resultado = resultado.difference(conjunto3)
+        elif operacion2 == "simetrica":
+            resultado = resultado.symmetric_difference(conjunto3)
     
-    resultado = conjunto1 #para probar
+    resultado = sorted(resultado)  # Ordenamos el resultado para que se muestre de manera consistente
+    print("Resultado:", resultado)
+    
     return jsonify({"resultado": list(resultado)})
 
 

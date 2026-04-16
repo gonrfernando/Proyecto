@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() { 
+    // ---------------------------- Manejeo de archivos ------------------------------
     const conjuntoU = document.getElementById('conjuntoU'); 
     const conjuntoA = document.getElementById('conjuntoA'); 
     const conjuntoB = document.getElementById('conjuntoB'); 
@@ -21,20 +22,28 @@ document.addEventListener('DOMContentLoaded', function() {
         const text = event.target.result;
         var lineas = text.split('\n');
         for (var i = 0; i < lineas.length; i++) {
+            lineas[i] = lineas[i].replace(/\r$/, ''); // Quita un posible /r que aparece después de cada línea en Windows
+            if(lineas[i] === '') {
+                continue; // Si la línea está vacía, la ignoramos
+            }   
             switch(conjunto) {
                 case "U":
+                    conjuntoUtext.value = "";
                     conjuntoUset.add(lineas[i]);
                     conjuntoUtext.value = Array.from(conjuntoUset).join(', ');
                     break;
                 case "A":
+                    conjuntoAtext.value = "";
                     conjuntoAset.add(lineas[i]);
                     conjuntoAtext.value = Array.from(conjuntoAset).join(', ');
                     break;
                 case "B":
+                    conjuntoBtext.value = "";
                     conjuntoBset.add(lineas[i]);
                     conjuntoBtext.value = Array.from(conjuntoBset).join(', ');
                     break;
                 case "C":
+                    conjuntoCtext.value = "";
                     conjuntoCset.add(lineas[i]);
                     conjuntoCtext.value = Array.from(conjuntoCset).join(', ');
                     break;
@@ -87,72 +96,23 @@ document.addEventListener('DOMContentLoaded', function() {
     var operacionSeleccionada2 = null;
 
     function actualizarSeleccion(conjunto) {
-        // Check if this set is already selected
-        if(conjuntoSeleccionado1 === conjunto) {
-            alert('Este conjunto ya ha sido seleccionado. Elige otro.');
-        } else if(conjuntoSeleccionado2 === conjunto) {
-            alert('Este conjunto ya ha sido seleccionado. Elige otro.');
-        } else if(conjuntoSeleccionado3 === conjunto) {
-            alert('Este conjunto ya ha sido seleccionado. Elige otro.');
-        } else if (conjuntoSeleccionado1 === null) {
-            conjuntoSeleccionado1 = conjunto;
-            operacionSeleccionadaText.value = conjunto + ' ';
-        } else if (operacionSeleccionada === null) {
-            alert('Por favor, selecciona una operación antes de elegir el segundo conjunto.');
-        } else if (conjuntoSeleccionado2 === null) {
-            conjuntoSeleccionado2 = conjunto;
-            operacionSeleccionadaText.value += conjunto + ' ';
-        } else if (operacionSeleccionada2 === null) {
-            alert('Por favor, selecciona la segunda operación antes de elegir el tercer conjunto.');
-        } else if (conjuntoSeleccionado3 === null) {
-            conjuntoSeleccionado3 = conjunto;
-            operacionSeleccionadaText.value += conjunto + ' ';
-        } else {
-            alert('Ya has seleccionado tres conjuntos. Por favor, realiza una operación o reinicia la selección.');
-        }
+        operacionSeleccionadaText.value += conjunto + ' ';
     }
 
     function actualizarOperacion(operacion) {
-        if (conjuntoSeleccionado1 === null) {
-            alert('Por favor, selecciona un conjunto');
-            return;
-        } else if (operacionSeleccionada === null) {
-            operacionSeleccionada = operacion;
-            switch(operacion) {
-                case 'union':
-                    operacionSeleccionadaText.value += 'U ';
-                    break;
-                case 'interseccion':
-                    operacionSeleccionadaText.value += '∩ ';
-                    break;
-                case 'diferencia':
-                    operacionSeleccionadaText.value += '- ';
-                    break;
-                case 'simetrica':
-                    operacionSeleccionadaText.value += '△ ';
-                    break;
-            }
-        } else if (conjuntoSeleccionado2 === null) {
-            alert('Por favor, selecciona el segundo conjunto antes de la segunda operación.');
-            return;
-        } else if (operacionSeleccionada2 === null) {
-            operacionSeleccionada2 = operacion;
-            switch(operacion) {
-                case 'union':
-                    operacionSeleccionadaText.value += 'U ';
-                    break;
-                case 'interseccion':
-                    operacionSeleccionadaText.value += '∩ ';
-                    break;
-                case 'diferencia':
-                    operacionSeleccionadaText.value += '- ';
-                    break;
-                case 'simetrica':
-                    operacionSeleccionadaText.value += '△ ';
-                    break;
-            }
-        } else {
-            alert('Ya has seleccionado dos operaciones.');
+        switch(operacion) {
+            case 'union':
+                operacionSeleccionadaText.value += 'U ';
+                break;
+            case 'interseccion':
+                operacionSeleccionadaText.value += '∩ ';
+                break;
+            case 'diferencia':
+                operacionSeleccionadaText.value += '- ';
+                break;
+            case 'simetrica':
+                operacionSeleccionadaText.value += '△ ';
+                break;
         }
     }
 
@@ -199,9 +159,81 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     botonRealizarOperacion.addEventListener('click', function() {
-        if (conjuntoSeleccionado1 === null || operacionSeleccionada === null || conjuntoSeleccionado2 === null) {
+        var segundoParentesis = false;
+        if(operacionSeleccionadaText.value === '') {
             alert('Por favor, selecciona al meons dos conjuntos y una operación antes de realizarla.');
-            return;
+        } else {
+            conjuntoSeleccionado1 = null;
+            conjuntoSeleccionado2 = null;
+            conjuntoSeleccionado3 = null;
+            operacionSeleccionada = null;
+            operacionSeleccionada2 = null;
+            for (var i = 0; i < operacionSeleccionadaText.value.length; i++) {
+                if(operacionSeleccionadaText.value[i] === ' ') {
+                    continue;
+                }
+                if(operacionSeleccionadaText.value[i] === '(') {
+                    if(conjuntoSeleccionado1 === null) {
+                    continue; // Si encontramos un paréntesis de apertura y aún no hemos seleccionado ningún conjunto, lo ignoramos
+                    } else if(operacionSeleccionada === null) {
+                        continue; // Si encontramos un paréntesis de apertura y aún no hemos seleccionado ninguna operación, lo ignoramos
+                    } else if(conjuntoSeleccionado2 === null) {
+                        segundoParentesis = true;
+                    }
+                }else if(conjuntoSeleccionado1 === null && (operacionSeleccionadaText.value[i] === 'U' || operacionSeleccionadaText.value[i] === 'A' || operacionSeleccionadaText.value[i] === 'B' || operacionSeleccionadaText.value[i] === 'C')) {
+                    conjuntoSeleccionado1 = operacionSeleccionadaText.value[i];
+                } else if(operacionSeleccionada === null && (operacionSeleccionadaText.value[i] === 'U' || operacionSeleccionadaText.value[i] === '∩' || operacionSeleccionadaText.value[i] === '-' || operacionSeleccionadaText.value[i] === '△')) {
+                    switch(operacionSeleccionadaText.value[i]) {
+                        case 'U':
+                            operacionSeleccionada = 'union';
+                            break;
+                        case '∩':
+                            operacionSeleccionada = 'interseccion';
+                            break;
+                        case '-':
+                            operacionSeleccionada = 'diferencia';
+                            break;
+                        case '△':
+                            operacionSeleccionada = 'simetrica';
+                            break;
+                    }
+                }else if(conjuntoSeleccionado2 === null && (operacionSeleccionadaText.value[i] === 'U' || operacionSeleccionadaText.value[i] === 'A' || operacionSeleccionadaText.value[i] === 'B' || operacionSeleccionadaText.value[i] === 'C')) {
+                    conjuntoSeleccionado2 = operacionSeleccionadaText.value[i];
+                } else if(operacionSeleccionada2 === null && (operacionSeleccionadaText.value[i] === 'U' || operacionSeleccionadaText.value[i] === '∩' || operacionSeleccionadaText.value[i] === '-' || operacionSeleccionadaText.value[i] === '△')) {
+                    switch(operacionSeleccionadaText.value[i]) {
+                        case 'U':
+                            operacionSeleccionada2 = 'union';
+                            break;
+                        case '∩':
+                            operacionSeleccionada2 = 'interseccion';
+                            break;
+                        case '-':
+                            operacionSeleccionada2 = 'diferencia';
+                            break;
+                        case '△':
+                            operacionSeleccionada2 = 'simetrica';
+                            break;
+                    }
+                }else if(conjuntoSeleccionado3 === null && (operacionSeleccionadaText.value[i] === 'U' || operacionSeleccionadaText.value[i] === 'A' || operacionSeleccionadaText.value[i] === 'B' || operacionSeleccionadaText.value[i] === 'C')) {
+                    conjuntoSeleccionado3 = operacionSeleccionadaText.value[i];
+                }
+            }
+            if(segundoParentesis) {
+                if(conjuntoSeleccionado3){
+                    var aux = conjuntoSeleccionado1
+                    conjuntoSeleccionado1 = conjuntoSeleccionado2;
+                    conjuntoSeleccionado2 = conjuntoSeleccionado3;
+                    conjuntoSeleccionado3 = aux;
+                    aux = operacionSeleccionada;
+                    operacionSeleccionada = operacionSeleccionada2;
+                    operacionSeleccionada2 = aux;
+                }
+            }
+            console.log(conjuntoSeleccionado1, operacionSeleccionada, conjuntoSeleccionado2, operacionSeleccionada2, conjuntoSeleccionado3);
+            if(conjuntoSeleccionado2 === null || operacionSeleccionada === null) {
+                alert('Por favor, selecciona al meons dos conjuntos y una operación antes de realizarla.');
+                return;
+            }
         }
         
         if (conjuntoSeleccionado1 === 'U') {
