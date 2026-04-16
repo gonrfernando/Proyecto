@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var conjuntoCset = new Set();
     var conjunto1Set = new Set();
     var conjunto2Set = new Set();
+    var conjunto3Set = new Set();
     var resultadoSet = new Set();
 
     var reader = new FileReader();
@@ -77,26 +78,37 @@ document.addEventListener('DOMContentLoaded', function() {
     const operacionSeleccionadaText = document.getElementById('operacion-seleccionada');
     const resultadoConjuntos = document.getElementById('resultado-conjuntos-text');
     const botonRealizarOperacion = document.getElementById('boton-realizar-operacion');
+    const botonBorrarOperacion = document.getElementById('borrar-operacion');
 
     var conjuntoSeleccionado1 = null;
     var conjuntoSeleccionado2 = null;
     var operacionSeleccionada = null;
+    var conjuntoSeleccionado3 = null;
+    var operacionSeleccionada2 = null;
 
     function actualizarSeleccion(conjunto) {
+        // Check if this set is already selected
         if(conjuntoSeleccionado1 === conjunto) {
-            conjuntoSeleccionado1 = null;
+            alert('Este conjunto ya ha sido seleccionado. Elige otro.');
         } else if(conjuntoSeleccionado2 === conjunto) {
-            conjuntoSeleccionado2 = null;
+            alert('Este conjunto ya ha sido seleccionado. Elige otro.');
+        } else if(conjuntoSeleccionado3 === conjunto) {
+            alert('Este conjunto ya ha sido seleccionado. Elige otro.');
         } else if (conjuntoSeleccionado1 === null) {
             conjuntoSeleccionado1 = conjunto;
-            operacionSeleccionadaText.value = operacionSeleccionadaText.value + conjunto + ' ';
+            operacionSeleccionadaText.value = conjunto + ' ';
         } else if (operacionSeleccionada === null) {
             alert('Por favor, selecciona una operación antes de elegir el segundo conjunto.');
         } else if (conjuntoSeleccionado2 === null) {
             conjuntoSeleccionado2 = conjunto;
-            operacionSeleccionadaText.value = operacionSeleccionadaText.value + conjunto + ' ';
+            operacionSeleccionadaText.value += conjunto + ' ';
+        } else if (operacionSeleccionada2 === null) {
+            alert('Por favor, selecciona la segunda operación antes de elegir el tercer conjunto.');
+        } else if (conjuntoSeleccionado3 === null) {
+            conjuntoSeleccionado3 = conjunto;
+            operacionSeleccionadaText.value += conjunto + ' ';
         } else {
-            alert('Ya has seleccionado dos conjuntos. Por favor, realiza una operación o reinicia la selección.');
+            alert('Ya has seleccionado tres conjuntos. Por favor, realiza una operación o reinicia la selección.');
         }
     }
 
@@ -104,22 +116,43 @@ document.addEventListener('DOMContentLoaded', function() {
         if (conjuntoSeleccionado1 === null) {
             alert('Por favor, selecciona un conjunto');
             return;
-        }else if (operacionSeleccionada === null) {
+        } else if (operacionSeleccionada === null) {
             operacionSeleccionada = operacion;
             switch(operacion) {
                 case 'union':
-                    operacionSeleccionadaText.value = operacionSeleccionadaText.value + 'U ';
+                    operacionSeleccionadaText.value += 'U ';
                     break;
                 case 'interseccion':
-                    operacionSeleccionadaText.value = operacionSeleccionadaText.value + '∩ ';
+                    operacionSeleccionadaText.value += '∩ ';
                     break;
                 case 'diferencia':
-                    operacionSeleccionadaText.value = operacionSeleccionadaText.value + '- ';
+                    operacionSeleccionadaText.value += '- ';
                     break;
                 case 'simetrica':
-                    operacionSeleccionadaText.value = operacionSeleccionadaText.value + '△ ';
+                    operacionSeleccionadaText.value += '△ ';
                     break;
             }
+        } else if (conjuntoSeleccionado2 === null) {
+            alert('Por favor, selecciona el segundo conjunto antes de la segunda operación.');
+            return;
+        } else if (operacionSeleccionada2 === null) {
+            operacionSeleccionada2 = operacion;
+            switch(operacion) {
+                case 'union':
+                    operacionSeleccionadaText.value += 'U ';
+                    break;
+                case 'interseccion':
+                    operacionSeleccionadaText.value += '∩ ';
+                    break;
+                case 'diferencia':
+                    operacionSeleccionadaText.value += '- ';
+                    break;
+                case 'simetrica':
+                    operacionSeleccionadaText.value += '△ ';
+                    break;
+            }
+        } else {
+            alert('Ya has seleccionado dos operaciones.');
         }
     }
 
@@ -155,9 +188,19 @@ document.addEventListener('DOMContentLoaded', function() {
         actualizarOperacion('simetrica');
     }); 
 
+    botonBorrarOperacion.addEventListener('click', function() {
+        conjuntoSeleccionado1 = null;
+        conjuntoSeleccionado2 = null;
+        conjuntoSeleccionado3 = null;
+        operacionSeleccionada = null;
+        operacionSeleccionada2 = null;
+        operacionSeleccionadaText.value = '';
+        resultadoConjuntos.value = '';
+    });
+
     botonRealizarOperacion.addEventListener('click', function() {
         if (conjuntoSeleccionado1 === null || operacionSeleccionada === null || conjuntoSeleccionado2 === null) {
-            alert('Por favor, selecciona dos conjuntos y una operación antes de realizarla.');
+            alert('Por favor, selecciona al meons dos conjuntos y una operación antes de realizarla.');
             return;
         }
         
@@ -179,6 +222,15 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (conjuntoSeleccionado2 === 'C') {
             conjunto2Set = conjuntoCset;
         }
+        if (conjuntoSeleccionado3 === 'U') {
+            conjunto3Set = conjuntoUset;
+        } else if (conjuntoSeleccionado3 === 'A') {
+            conjunto3Set = conjuntoAset;
+        } else if (conjuntoSeleccionado3 === 'B') {
+            conjunto3Set = conjuntoBset;
+        } else if (conjuntoSeleccionado3 === 'C') {
+            conjunto3Set = conjuntoCset;
+        }
 
         fetch("/realizar-operacion", { //Mandamos la operacion al python para que la ejecute y nos devuelva el resultado
             method: 'POST',
@@ -188,7 +240,9 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify({
                 conjunto1: Array.from(conjunto1Set),
                 conjunto2: Array.from(conjunto2Set),
-                operacion: operacionSeleccionada
+                operacion: operacionSeleccionada,
+                conjunto3: Array.from(conjunto3Set),
+                operacion2: operacionSeleccionada2
             })
         })
         .then(response => response.json())

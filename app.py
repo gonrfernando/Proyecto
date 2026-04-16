@@ -80,7 +80,9 @@ def realizar_operacion():
 
     conjunto1 = data.get("conjunto1")
     conjunto2 = data.get("conjunto2")
-    operacion = data.get("operacion")
+    operacion1 = data.get("operacion")
+    conjunto3 = data.get("conjunto3")
+    operacion2 = data.get("operacion2")
     resultado = set()
     #Hay que hacer ifs para cada caso, si operacion es "union", resultado es la union de conjunto1 y conjunto2, si es "interseccion", resultado es la interseccion de conjunto1 y conjunto2, etc.
     
