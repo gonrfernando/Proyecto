@@ -10,6 +10,10 @@ app.secret_key = "Fanta de Limon"
 def home():
     return(render_template('home.html'))
 
+@app.route("/Presentacion")
+def presentacion():
+    return(render_template('presentacion.html'))
+
 
 @app.route("/Tablas") #Mostramos tablas.html cuando el link es "/Tablas"
 def tablas():
@@ -77,7 +81,8 @@ def conjuntos():
 @app.route("/realizar-operacion", methods=['POST'])
 def realizar_operacion():
     data = request.get_json()
-
+    
+    #Obtenemos los conjuntos y las operaciones
     conjunto1 = data.get("conjunto1")
     conjunto2 = data.get("conjunto2")
     operacion1 = data.get("operacion")
@@ -87,6 +92,7 @@ def realizar_operacion():
     conjunto2 = set(conjunto2)
     conjunto3 = set(conjunto3) if conjunto3 else None
     resultado = set()
+    #Realizamos la primera operación entre conjunto1 y conjunto2
     if operacion1 == "union":
         resultado = conjunto1.union(conjunto2)
     elif operacion1 == "interseccion":
@@ -95,7 +101,7 @@ def realizar_operacion():
         resultado = conjunto1.difference(conjunto2)
     elif operacion1 == "simetrica":
         resultado = conjunto1.symmetric_difference(conjunto2)
-        
+    #Realizamos la segunda operación entre el resultado anterior y el conjunto3, si es que hay
     if operacion2 and conjunto3:
         if operacion2 == "union":
             resultado = resultado.union(conjunto3)
@@ -109,7 +115,7 @@ def realizar_operacion():
     resultado = sorted(resultado)  # Ordenamos el resultado para que se muestre de manera consistente
     print("Resultado:", resultado)
     
-    return jsonify({"resultado": list(resultado)})
+    return jsonify({"resultado": list(resultado)}) #Enviamos el resultado a la interfaz grafica
 
 
 def generar_tabla_verdad(arreglo_hipotesis, conclusion, metodo):

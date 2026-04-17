@@ -22,11 +22,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const text = event.target.result;
         var lineas = text.split('\n');
         for (var i = 0; i < lineas.length; i++) {
-            lineas[i] = lineas[i].replace(/\r$/, ''); // Quita un posible /r que aparece después de cada línea en Windows
+            lineas[i] = lineas[i].replace(/\r$/, ''); // Quita un posible /r que aparece después de cada línea en Windows en ciertos archivos txt
             if(lineas[i] === '') {
                 continue; // Si la línea está vacía, la ignoramos
             }   
-            switch(conjunto) {
+            switch(conjunto) { //Dependiendo del conjunto elegido, se coloca su contenido en el recuadro correspondiente y se almacena su contenido en su conjunto set
                 case "U":
                     conjuntoUtext.value = "";
                     conjuntoUset.add(lineas[i]);
@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Funciones que detectan cuando se carga un archivo en alguno de los inputs destinados
     conjuntoU.addEventListener('change', function() {
         reader.readAsText(conjuntoU.files[0]);
         reader.onload = function(event) { onload(event, "U"); };
