@@ -14,11 +14,9 @@ def home():
 def presentacion():
     return(render_template('presentacion.html'))
 
-
 @app.route("/Tablas") #Mostramos tablas.html cuando el link es "/Tablas"
 def tablas():
     return(render_template('tablas.html')) 
-
 
 @app.route('/resultado') #Mostramos resultado.html cuando el link es "/resultado". Esta ruta se llama desde el main.js despues de hacer la tabla de verdad, para mostrarla
 def resultado():
@@ -33,7 +31,6 @@ def resultado():
     
     #Manda a mostrar el resultado.html y le pasa los encabezados y la tabla como variables al html
     return(render_template('resultado.html', encabezados=encabezados, tabla=tabla, metodo=metodo, renglones_criticos=renglones_criticos, renglones_falla=renglones_falla, argumento_valido=argumento_valido)) 
-
 
 @app.route('/renglon-critico', methods=['POST']) #se manda a llamar desde main.js cuando se usa el boton de renglon critico
 def renglon_critico():
@@ -117,6 +114,27 @@ def realizar_operacion():
     
     return jsonify({"resultado": list(resultado)}) #Enviamos el resultado a la interfaz grafica
 
+@app.route("/Sucesiones")
+def sucesiones():
+    return render_template("sucesiones.html")
+
+@app.route("/calcular_sucesion", methods=["POST"])
+def calcular_sucesion():
+    data = request.get_json()
+    funcion = data.get("funcion")
+    limite_inf = int(data.get("limite_inf"))
+    limite_sup = int(data.get("limite_sup"))
+    print("Funcion:", funcion)
+    print("Limite inferior:", limite_inf)
+    print("Limite superior:", limite_sup)
+    
+    resultados = []
+    for n in range(limite_inf, limite_sup + 1):
+        resultado = eval(funcion.replace("n", str(n)))
+        resultados.append(resultado)
+    print("Resultados de la sucesión:", resultados)
+    
+    return jsonify({"resultados": resultados})
 
 def generar_tabla_verdad(arreglo_hipotesis, conclusion, metodo):
     implicacion_general = ""

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/sucesiones.js') }}"></script>
+{% endblock scripts %}
+
+{% block content %}
+<!--Divs para centrar todo-->
+<div class="center-frame d-flex flex-row w-100">
+    <div class="d-flex flex-wrap w-100 flex-column align-content-center justify-content-center">
+        <!-- cuadro de la izq -->
+        <div class="d-flex flex-column crystal-panel w-100">
+            <div class="h-100 d-flex flex-column pb-4">
+                <!--seccion para agregar hipotesis-->
+                <h1 style="font-size: 3rem; line-height:1; font-weight:700;">Sucesiones</h1>
+                <p class="color-muted fs-5">Ingresa la<span class="color-primary"> funcion para cada termino n </span>de la sucesion y los limites<br> Recuerda usar una formula válida y con caracteres válidos</p>
+                <div class="h-container h-25 d-flex flex-column overflow-auto w-100 mt-2 gap-1">
+                    <div class="d-flex flex-row w-100 align-items-center justify-content-start">
+                        <h3 class="ms-4 sub mt-2">Funcion:</h3>
+                        <input class="h-auto w-25" id="funcion" type="text" placeholder="Ejemplo: n^2 + 1">
+                        <h3 class="ms-4 sub mt-2">Limite inf:</h3>
+                        <input class="h-auto w-auto" id="limite-inf" type="text">
+                        <h3 class="ms-4 sub mt-2">Limite sup:</h3>
+                        <input class="h-auto w-auto" id="limite-sup" type="text">
+                    </div>
+                </div>
+                <button class="btn-highlight p-2 mt-2 hover-primary" id="calcular-sucesion">Calcular</button>
+                <h3 class="mt-5 sub w-auto">Resultado: </h3>
+                <div class="h-container h-75 d-flex flex-column overflow-auto w-100 mt-2 gap-1" id="resultado-sucesion" style="min-height: 300px;">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Boton para ir para atras-->
+<a class="crystal-panel hover-primary p-3 m-3 position-absolute top-0" href="/">
+    <div class="d-flex flex-row">
+        <div class="d-flex align-items-center justify-content-center me-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/></svg>
+        </div>
+        <div class=" justify-content-center align-items-center text-center">
+            <h1 class="fs-4 lh-1 fw-bold p-0 m-0">Atras</h1>
+        </div>
+    </div>
+</a>
+
+{% endblock content %}
