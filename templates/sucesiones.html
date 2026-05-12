@@ -11,12 +11,11 @@
         <!-- cuadro de la izq -->
         <div class="d-flex flex-column crystal-panel w-100">
             <div class="h-100 d-flex flex-column pb-4">
-                <!--seccion para agregar hipotesis-->
                 <h1 style="font-size: 3rem; line-height:1; font-weight:700;">Sucesiones</h1>
-                <p class="color-muted fs-5">Ingresa la<span class="color-primary"> funcion para cada termino n </span>de la sucesion y los limites<br> Recuerda usar una formula válida y con caracteres válidos</p>
-                <div class="h-container h-25 d-flex flex-column overflow-auto w-100 mt-2 gap-1">
+                <p class="color-muted fs-5">Ingresa la<span class="color-primary"> formula explicita </span>para cada termino n de la sucesion y los limites<br> Recuerda usar una formula válida y con caracteres válidos</p>
+                <div class="h-container d-flex flex-column overflow-auto w-100 mt-2 gap-1" style="height: fit-content; min-height: 80px;">
                     <div class="d-flex flex-row w-100 align-items-center justify-content-start">
-                        <h3 class="ms-4 sub mt-2">Funcion:</h3>
+                        <h3 class="ms-4 sub mt-2">Fórmula:</h3>
                         <input class="h-auto w-25" id="funcion" type="text" placeholder="Ejemplo: n**2 + 1">
                         <h3 class="ms-4 sub mt-2">Limite inf:</h3>
                         <input class="h-auto w-auto" id="limite-inf" type="text">
@@ -26,7 +25,13 @@
                 </div>
                 <button class="btn-highlight p-2 mt-2 hover-primary" id="calcular-sucesion">Calcular</button>
                 <h3 class="mt-5 sub w-auto">Resultado: </h3>
-                <div class="h-container h-75 d-flex flex-column overflow-auto w-100 mt-2 gap-1" id="resultado-sucesion" style="min-height: 300px;">
+                <div class="d-flex flex-row">
+                    <p class="color-muted fs-5">Sumatoria:</p>
+                    <input class="h-auto w-auto ms-2 me-5" id="sumatoria-sucesion" type="text" disabled>
+                    <p class="color-muted fs-5">Producto:</p>
+                    <input class="h-auto w-auto ms-2" id="producto-sucesion" type="text" disabled>
+                </div>
+                <div class="h-container d-flex flex-column overflow-auto w-100 mt-2 gap-1" id="resultado-sucesion" style="min-height: 300px; height: fit-content;">
                     
                 </div>
             </div>

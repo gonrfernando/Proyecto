@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() { 
 
+    //Declarar las variables para los elementos gráficos del input y el resultado
     const funcionInput = document.getElementById('funcion');
     const limiteSupInput = document.getElementById('limite-sup');
     const limiteInfInput = document.getElementById('limite-inf');
@@ -7,13 +8,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultado = document.getElementById('resultado-sucesion');
 
     calcularBtn.addEventListener('click', function() {
+        //Leemos los valores de los inputs
         const funcion = funcionInput.value;
         const limiteSup = parseInt(limiteSupInput.value);
         const limiteInf = parseInt(limiteInfInput.value);
+        //Checamos que los limites sean números válidos
         if (isNaN(limiteSup) || isNaN(limiteInf)) {
             alert('Por favor, ingresa límites válidos.');
             return;
         }
+        //Enviamos los datos al backend para calcular la sucesión
         fetch('/calcular_sucesion', {
             method: 'POST',
             headers: {
@@ -28,13 +32,15 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             resultado.innerHTML = ''; // Limpiar resultados anteriores
-            resultado.innerHTML = data.resultados
-                .map((valor, index) => `<p>n=${limiteInf + index}: ${valor}</p>`)
-                .join('');
+            // La lista de resultados se muestra en el div resultado, cada término con su n correspondiente
+            resultado.innerHTML = data.resultados.map((valor, index) => `<p>n=${limiteInf + index}: ${valor}</p>`).join('');
+            // Mostrar la sumatoria y el producto en los inputs correspondientes
+            document.getElementById('sumatoria-sucesion').value = data.sumatoria;
+            document.getElementById('producto-sucesion').value = data.producto;
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error:', error);  //En caso de que haya un error al calcular la sucesión
             alert('Ocurrió un error al calcular la sucesión. Verifica la función y los límites ingresados.');
-        });
+        }); 
     });
 });

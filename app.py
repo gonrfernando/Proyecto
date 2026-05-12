@@ -120,21 +120,24 @@ def sucesiones():
 
 @app.route("/calcular_sucesion", methods=["POST"])
 def calcular_sucesion():
+    #Recibimos los datos json que mando el html
     data = request.get_json()
     funcion = data.get("funcion")
     limite_inf = int(data.get("limite_inf"))
     limite_sup = int(data.get("limite_sup"))
-    print("Funcion:", funcion)
-    print("Limite inferior:", limite_inf)
-    print("Limite superior:", limite_sup)
     
+    #Definimos la lista para guardar los resultados, la sumatoria y el producto
     resultados = []
-    for n in range(limite_inf, limite_sup + 1):
-        resultado = eval(funcion.replace("n", str(n)))
-        resultados.append(resultado)
-    print("Resultados de la sucesión:", resultados)
-    
-    return jsonify({"resultados": resultados})
+    sumatoria = 0
+    producto = 1
+    for n in range(limite_inf, limite_sup + 1): #Evaluamos la fomula para cada n entre los límites
+        resultado = eval(funcion.replace("n", str(n))) #Evaluamos la formula con el n actual
+        sumatoria += resultado #Vamos sumando cada resultado a la sumatoria
+        producto *= resultado #Vamos multiplicando cada resultado al producto
+        resultados.append(resultado) #Añadimos el termino actual a la lista de resultados
+
+    #Enviamos los resultados, la sumatoria y el producto a la interfaz grafica
+    return jsonify({"resultados": resultados, "sumatoria": sumatoria, "producto": producto})
 
 def generar_tabla_verdad(arreglo_hipotesis, conclusion, metodo):
     implicacion_general = ""
