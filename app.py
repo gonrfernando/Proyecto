@@ -132,8 +132,8 @@ def calcular_sucesion():
     sumatoria = 0
     producto = 1
     for n in range(limite_inf, limite_sup + 1): #Evaluamos la fomula para cada n entre los límites
-        equivalencias.append(funcion.replace("n", str(n)))
-        resultado = eval(funcion.replace("n", str(n))) #Evaluamos la formula con el n actual
+        equivalencias.append(funcion.replace("n", f"({str(n)})"))
+        resultado = eval(funcion.replace("n", f"({str(n)})")) #Evaluamos la formula con el n actual
         sumatoria += resultado #Vamos sumando cada resultado a la sumatoria
         producto *= resultado #Vamos multiplicando cada resultado al producto
         resultados.append(resultado) #Añadimos el termino actual a la lista de resultados
@@ -180,7 +180,8 @@ def generar_tabla_verdad(arreglo_hipotesis, conclusion, metodo):
             if implicacion_general:
                 implicacion_general += " and "
             implicacion_general += "(" + h + ")"  #ej "(h1) and (h2) and ... and (hn)"
-        implicacion_general = "(" + implicacion_general + ") <= " + conclusion #ej "((h1) and (h2) and ... and (hn)) <= conclusion"
+        implicacion_general = "(" + implicacion_general + ") <= (" + conclusion + ")" #ej "((h1) and (h2) and ... and (hn)) <= conclusion"
+        print(implicacion_general)
         encabezados.append("Conjunción de Hipotesis -> Conclusion") #Agregamos el encabezado de la ultima columna, que es la implicacion gigante
 
     n = len(variables)

@@ -89,6 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultadoConjuntos = document.getElementById('resultado-conjuntos-text');
     const botonRealizarOperacion = document.getElementById('boton-realizar-operacion');
     const botonBorrarOperacion = document.getElementById('borrar-operacion');
+    const botonComplemento = document.getElementById('operacion-complemento');
 
     var conjuntoSeleccionado1 = null;
     var conjuntoSeleccionado2 = null;
@@ -113,6 +114,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
             case 'simetrica':
                 operacionSeleccionadaText.value += '△ ';
+                break;
+            case 'complemento':
+                operacionSeleccionadaText.value += '\' ';
                 break;
         }
     }
@@ -148,6 +152,11 @@ document.addEventListener('DOMContentLoaded', function() {
     botonDiferenciaSimetrica.addEventListener('click', function() {
         actualizarOperacion('simetrica');
     }); 
+
+    botonComplemento.addEventListener('click', function() {
+        actualizarOperacion('complemento');
+    });
+
 
     botonBorrarOperacion.addEventListener('click', function() {
         conjuntoSeleccionado1 = null;
