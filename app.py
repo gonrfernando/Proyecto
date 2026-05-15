@@ -128,16 +128,18 @@ def calcular_sucesion():
     
     #Definimos la lista para guardar los resultados, la sumatoria y el producto
     resultados = []
+    equivalencias = []
     sumatoria = 0
     producto = 1
     for n in range(limite_inf, limite_sup + 1): #Evaluamos la fomula para cada n entre los límites
+        equivalencias.append(funcion.replace("n", str(n)))
         resultado = eval(funcion.replace("n", str(n))) #Evaluamos la formula con el n actual
         sumatoria += resultado #Vamos sumando cada resultado a la sumatoria
         producto *= resultado #Vamos multiplicando cada resultado al producto
         resultados.append(resultado) #Añadimos el termino actual a la lista de resultados
 
     #Enviamos los resultados, la sumatoria y el producto a la interfaz grafica
-    return jsonify({"resultados": resultados, "sumatoria": sumatoria, "producto": producto})
+    return jsonify({"resultados": resultados, "equivalencias":equivalencias, "sumatoria": sumatoria, "producto": producto})
 
 def generar_tabla_verdad(arreglo_hipotesis, conclusion, metodo):
     implicacion_general = ""
